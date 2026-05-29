@@ -1,0 +1,143 @@
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
+import random
+import math
+
+from modelos import draw_ship, draw_meteor
+
+WIDTH, HEIGHT = 800, 600
+
+NUM_STARS = 150
+stars = [[random.uniform(-5, 5), random.uniform(-5, 5), random.uniform(-20, 1)] for _ in range(NUM_STARS)]
+
+NUM_METEORS = 3
+meteors = [[random.uniform(-4, 4), random.uniform(-3, -1), random.uniform(-20, -10), random.uniform(0.2, 0.4)] for _ in range(NUM_METEORS)]
+
+# Variáveis de Controle (Animação e Tempo)
+frame = 0
+star_speed = 0.05
+ship_vibration = 0.0
+fov_zoom = 45.0
+story_text = "---"
+
+# texto
+def draw_text(x, y, text):
+    glColor3f(1.0, 1.0, 1.0)
+    glMatrixMode(GL_PROJECTION)
+    glPushMatrix()
+    glLoadIdentity()
+    gluOrtho2D(0, WIDTH, 0, HEIGHT)
+    glMatrixMode(GL_MODELVIEW)
+    glPushMatrix()
+    glLoadIdentity()
+    glRasterPos2i(x, y)
+    for char in text:
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(char))
+    glPopMatrix()
+    glMatrixMode(GL_PROJECTION)
+    glPopMatrix()
+    glMatrixMode(GL_MODELVIEW)
+
+# função de update das fases (modificando velocidade das estrelas, texto, vibração ETC.)
+def update_logic(value):
+    global frame, star_speed, ship_vibration, story_text
+    frame += 1
+    
+    if frame < 150:
+        story_text = "Sistemas estaveis. Velocidade de cruzeiro."
+        star_speed = 0.05
+        ship_vibration = 0.0
+    elif 150 <= frame < 300:
+        story_text = "Alerta! Hiper-propulsores carregando..."
+        star_speed = 0.2
+        ship_vibration = random.uniform(-0.02, 0.02)
+    elif 300 <= frame < 500:
+        story_text = "DOBRA ESPACIAL ATIVADA!"
+        star_speed = 0.6
+        hip_vibration = random.uniform(-0.06, 0.06)
+    else:
+        frame = 0
+        fov_zoom = 45.0
+
+    for star in stars:
+        star[2] += star_speed
+        if star[2] > 1:
+            star[2] = random.uniform(-20, -10)
+            star[0] = random.uniform(-5, 5)
+            star[1] = random.uniform(-5, 5)
+
+    for meteor in meteors:
+        meteor[2] += star_speed * 1.2
+        if meteor[2] > 2:
+            meteor[2] = random.uniform(-30, -15)
+            meteor[0] = random.uniform(-6, 6)
+
+    glutPostRedisplay()
+    glutTimerFunc(16, update_logic, 0)
+
+# função de renderização
+def display():
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glClearColor(0.0, 0.0, 0.0, 1.0)
+    
+    glLoadIdentity()
+    
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(fov_zoom, (WIDTH / HEIGHT), 0.1, 50.0)
+    glMatrixMode(GL_MODELVIEW)
+
+    # DESENHAR ESTRELAS
+    glPointSize(3.0)
+    glBegin(GL_POINTS)
+    glColor3f(1.0, 1.0, 1.0)
+    for star in stars:
+        glVertex3f(star[0], star[1], star[2])
+    glEnd()
+
+    # DESENHAR METEOROS
+    for meteor in meteors:
+        glPushMatrix()
+        glTranslatef(meteor[0], meteor[1], meteor[2])
+        draw_meteor(meteor[3]) # Chamando a função importada
+        glPopMatrix()
+
+    if frame < 300:
+        blink_value = 1.0
+    
+    else:
+        blink_value = (math.sin(frame * 0.5) + 1.0) / 2.0
+    
+    float_y = math.sin(frame * 0.05) * 0.15          
+    roll_z = math.cos(frame * 0.03) * 12.0          
+    pitch_x = math.sin(frame * 0.02) * 5.0          
+
+    glPushMatrix()
+    glTranslatef(0.0 + ship_vibration, -0.3 + float_y + ship_vibration, -6.5)
+    
+    glRotatef(pitch_x, 1, 0, 0) 
+    glRotatef(180, 0, 1, 0)     
+    glRotatef(roll_z, 0, 0, 1)  
+    
+    draw_ship(blink_value)
+    glPopMatrix()
+
+    # narrativa
+    draw_text(30, 40, story_text)
+
+    glutSwapBuffers()
+
+def init():
+    glEnable(GL_DEPTH_TEST)
+    glClearColor(0.0, 0.0, 0.0, 1.0)
+
+if __name__ == "__main__":
+    glutInit()
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitWindowSize(WIDTH, HEIGHT)
+    glutCreateWindow(b"Fuga / animacao")
+    init()
+    glutDisplayFunc(display)
+    glutTimerFunc(16, update_logic, 0)
+    glutMainLoop()

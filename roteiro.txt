@@ -1,0 +1,28 @@
+Estrutura da animação (Última Fuga)
+
+Cena 1 — Calma (0–5s)
+Nave parada ou flutuando
+Movimento leve
+Texto: “Sistema estável…”
+
+Cena 2 — Tensão (5–10s)
+Asteroides começam a passar
+Luz muda levemente
+Texto: “Anomalia detectada…”
+
+Cena 3 — Perigo (10–20s)
+Objetos aceleram
+Cor do ambiente muda (vermelho ou escuro)
+Nave começa a se mover
+Texto: “ALERTA: rota de colisão!”
+
+Cena 4 — Fuga (20–30s)
+Nave acelera MUITO
+Zoom da câmera
+Tudo se move rápido
+Texto: “Iniciando dobra…”
+
+Cena 5 — Final (30–40s)
+Nave desaparece (escala ↓ ou sai da tela)
+Cena escurece
+Texto: “Sinal perdido…”

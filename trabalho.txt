@@ -1,0 +1,7 @@
+Tema 2: Animações Criativas com Narrativa
+i. Desenvolva uma animação com tema livre que conte uma micro-história, com
+
+os seguintes elementos:
+a) Movimento coordenado de 3 ou mais objetos
+b) Mudança de estado (dia/noite, cor, velocidade, zoom etc.)
+c) Um elemento narrativo (ex: título, fala ou som sincronizado)
