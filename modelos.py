@@ -133,3 +133,63 @@ def draw_meteor(size):
         for vertex in face:
             glVertex3fv(vertices[vertex])
     glEnd()
+
+def draw_police():
+    glBegin(GL_TRIANGLES)
+
+    glColor3f(0.8, 0.1, 0.1)
+    glVertex3f(0, 0.3, 1)
+    glVertex3f(-0.4, -0.3, 0)
+    glVertex3f(0.4, -0.3, 0)
+
+    glColor3f(0.5, 0, 0)
+    glVertex3f(0, 0.3, 1)
+    glVertex3f(0.4, -0.3, 0)
+    glVertex3f(0, 0.2, -1)
+
+    glVertex3f(0, 0.3, 1)
+    glVertex3f(0, 0.2, -1)
+    glVertex3f(-0.4, -0.3, 0)
+
+    glColor3f(0.3, 0, 0)
+    glVertex3f(-0.4, -0.3, 0)
+    glVertex3f(0.4, -0.3, 0)
+    glVertex3f(0, -0.3, -1)
+
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1, 0, 0)
+
+    glVertex3f(-0.2, -0.1, -1.1)
+    glVertex3f(0.2, -0.1, -1.1)
+    glVertex3f(0.2, 0.1, -1.1)
+    glVertex3f(-0.2, 0.1, -1.1)
+
+    glEnd()
+
+    glBegin(GL_TRIANGLES)
+
+    # Asa esquerda
+    glColor3f(0.6, 0.0, 0.0)
+    glVertex3f(-0.4, -0.1, 0.2)
+    glVertex3f(-1.0, -0.2, -0.3)
+    glVertex3f(-0.4, 0.0, -0.3)
+    
+    # Asa direita
+    glVertex3f(0.4, -0.1, 0.2)
+    glVertex3f(1.0, -0.2, -0.3)
+    glVertex3f(0.4, 0.0, -0.3)
+    
+    glEnd()
+
+    glBegin(GL_QUADS)
+
+    glColor3f(0.2, 0.5, 1.0)
+    
+    glVertex3f(-0.15, 0.1, 0.3)
+    glVertex3f( 0.15, 0.1, 0.3)
+    glVertex3f( 0.10, 0.25, -0.1)
+    glVertex3f(-0.10, 0.25, -0.1)
+    
+    glEnd()

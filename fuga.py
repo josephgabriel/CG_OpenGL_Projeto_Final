@@ -4,7 +4,7 @@ from OpenGL.GLUT import *
 import random
 import math
 
-from modelos import draw_ship, draw_meteor
+from modelos import draw_ship, draw_meteor, draw_police
 
 WIDTH, HEIGHT = 800, 600
 
@@ -20,6 +20,7 @@ star_speed = 0.05
 ship_vibration = 0.0
 fov_zoom = 45.0
 story_text = "---"
+enemy_z = -25
 
 # texto
 def draw_text(x, y, text):
@@ -55,7 +56,7 @@ def update_logic(value):
     elif 300 <= frame < 500:
         story_text = "DOBRA ESPACIAL ATIVADA!"
         star_speed = 0.6
-        hip_vibration = random.uniform(-0.06, 0.06)
+        ship_vibration = random.uniform(-0.06, 0.06)
     else:
         frame = 0
         fov_zoom = 45.0
@@ -78,6 +79,7 @@ def update_logic(value):
 
 # função de renderização
 def display():
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glClearColor(0.0, 0.0, 0.0, 1.0)
     
@@ -118,7 +120,7 @@ def display():
     
     glRotatef(pitch_x, 1, 0, 0) 
     glRotatef(180, 0, 1, 0)     
-    glRotatef(roll_z, 0, 0, 1)  
+    glRotatef(roll_z, 0, 0, 1)
     
     draw_ship(blink_value)
     glPopMatrix()
