@@ -22,6 +22,12 @@ fov_zoom = 45.0
 story_text = "---"
 enemy_z = -25
 
+policia_y = 6.0
+policia_z = -15.0
+angulo_arrancada = 0.0
+nave_z = -6.5
+giro_camera = 0.0
+
 # texto
 def draw_text(x, y, text):
     glColor3f(1.0, 1.0, 1.0)
@@ -42,24 +48,57 @@ def draw_text(x, y, text):
 
 # função de update das fases (modificando velocidade das estrelas, texto, vibração ETC.)
 def update_logic(value):
-    global frame, star_speed, ship_vibration, story_text
-    frame += 1
+    global frame, star_speed, ship_vibration, story_text, fov_zoom
+    global policia_y, policia_z, angulo_arrancada, nave_z, giro_camera
     
-    if frame < 150:
-        story_text = "Sistemas estaveis. Velocidade de cruzeiro."
+    frame += 1
+    segundos = frame / 60.0
+    
+    if segundos < 48.0:
+
         star_speed = 0.05
         ship_vibration = 0.0
-    elif 150 <= frame < 300:
-        story_text = "Alerta! Hiper-propulsores carregando..."
-        star_speed = 0.2
+        angulo_arrancada = 0.0
+        nave_z = -6.5
+
+    elif segundos < 55.0:
+        
+        star_speed = 0.05
         ship_vibration = random.uniform(-0.02, 0.02)
-    elif 300 <= frame < 500:
-        story_text = "DOBRA ESPACIAL ATIVADA!"
-        star_speed = 0.6
-        ship_vibration = random.uniform(-0.06, 0.06)
+
+    elif segundos < 65.0:
+
+        if policia_y > 1.5:
+            policia_y -= 0.2
+        if policia_z < -8.0:
+            policia_z += 0.05
+        ship_vibration = random.uniform(-0.03, 0.03)
+
+    elif segundos < 67.0:
+
+        if angulo_arrancada > 35.0:
+            angulo_arrancada += 1.5
+        ship_vibration = random.uniform(-0.08, 0.08)
+        giro_camera = math.sin(frame * 0.5) * 2.0
+
+    elif segundos < 70.0:
+
+        star_speed = 0.8
+        ship_vibration = random.uniform(-0.15, 0.15)
+        giro_camera = 0.0
+        policia_z += 0.8
+
+        if angulo_arrancada > 0.0:
+            angulo_arrancada -= 2.0
+    
     else:
-        frame = 0
-        fov_zoom = 45.0
+        
+        star_speed = 1.2
+        nave_z -= 0.6
+        if fov_zoom < 110.0:
+            fov_zoom += 1.5
+        
+        policia_z += 1.5
 
     for star in stars:
         star[2] += star_speed
@@ -88,6 +127,7 @@ def display():
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(fov_zoom, (WIDTH / HEIGHT), 0.1, 50.0)
+    glRotatef(giro_camera, 0, 0, 1)
     glMatrixMode(GL_MODELVIEW)
 
     # DESENHAR ESTRELAS
@@ -105,20 +145,25 @@ def display():
         draw_meteor(meteor[3]) # Chamando a função importada
         glPopMatrix()
 
-    if frame < 300:
-        blink_value = 1.0
-    
-    else:
-        blink_value = (math.sin(frame * 0.5) + 1.0) / 2.0
-    
+    segundos = frame / 60.0
+
+    if segundos >= 55.0:
+        glPushMatrix()
+        glTranslatef(0.0, policia_y, policia_z)
+        glScalef(3.0, 3.0, 3.0)
+        draw_police()
+        glPopMatrix()
+
+    blink_value = (math.sin(frame * 0.5) + 1.0) / 2.0 if segundos >= 65.0 else 1.0
+
     float_y = math.sin(frame * 0.05) * 0.15          
     roll_z = math.cos(frame * 0.03) * 12.0          
     pitch_x = math.sin(frame * 0.02) * 5.0          
 
     glPushMatrix()
-    glTranslatef(0.0 + ship_vibration, -0.3 + float_y + ship_vibration, -6.5)
+    glTranslatef(0.0 + ship_vibration, -0.3 + float_y + ship_vibration, nave_z)
     
-    glRotatef(pitch_x, 1, 0, 0) 
+    glRotatef(pitch_x + angulo_arrancada, 1, 0, 0) 
     glRotatef(180, 0, 1, 0)     
     glRotatef(roll_z, 0, 0, 1)
     
