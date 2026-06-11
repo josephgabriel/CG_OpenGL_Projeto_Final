@@ -22,11 +22,11 @@ fov_zoom = 45.0
 story_text = "---"
 enemy_z = -25
 
+#. Variáveis de estado físico dos modelos e câmera (Minha parte)
 policia_y = 6.0
 policia_z = -15.0
 angulo_arrancada = 0.0
 nave_z = -6.5
-giro_camera = 0.0
 
 # texto
 def draw_text(x, y, text):
@@ -49,7 +49,7 @@ def draw_text(x, y, text):
 # função de update das fases (modificando velocidade das estrelas, texto, vibração ETC.)
 def update_logic(value):
     global frame, star_speed, ship_vibration, story_text, fov_zoom
-    global policia_y, policia_z, angulo_arrancada, nave_z, giro_camera
+    global policia_y, policia_z, angulo_arrancada, nave_z
     
     frame += 1
     segundos = frame / 60.0
@@ -68,36 +68,40 @@ def update_logic(value):
 
     elif segundos < 65.0:
 
+        # policia se aproxima
         if policia_y > 1.5:
             policia_y -= 0.2
         if policia_z < -8.0:
             policia_z += 0.05
+            
         ship_vibration = random.uniform(-0.03, 0.03)
 
     elif segundos < 67.0:
 
-        if angulo_arrancada > 35.0:
+        if angulo_arrancada < 35.0:
             angulo_arrancada += 1.5
+            
         ship_vibration = random.uniform(-0.08, 0.08)
-        giro_camera = math.sin(frame * 0.5) * 2.0
 
     elif segundos < 70.0:
 
         star_speed = 0.8
         ship_vibration = random.uniform(-0.15, 0.15)
-        giro_camera = 0.0
+        
         policia_z += 0.8
-
         if angulo_arrancada > 0.0:
             angulo_arrancada -= 2.0
     
     else:
         
         star_speed = 1.2
+        
+        # distorção na camera para dar ideia de velocidade
         nave_z -= 0.6
         if fov_zoom < 110.0:
             fov_zoom += 1.5
         
+        # nave da policia é deixada pra trás
         policia_z += 1.5
 
     for star in stars:
@@ -126,8 +130,8 @@ def display():
     
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
+
     gluPerspective(fov_zoom, (WIDTH / HEIGHT), 0.1, 50.0)
-    glRotatef(giro_camera, 0, 0, 1)
     glMatrixMode(GL_MODELVIEW)
 
     # DESENHAR ESTRELAS
@@ -142,13 +146,15 @@ def display():
     for meteor in meteors:
         glPushMatrix()
         glTranslatef(meteor[0], meteor[1], meteor[2])
-        draw_meteor(meteor[3]) # Chamando a função importada
+        draw_meteor(meteor[3])
         glPopMatrix()
 
     segundos = frame / 60.0
 
     if segundos >= 55.0:
         glPushMatrix()
+        
+        #. Posicionamento 3D da Viatura Policial
         glTranslatef(0.0, policia_y, policia_z)
         glScalef(3.0, 3.0, 3.0)
         draw_police()
@@ -161,6 +167,8 @@ def display():
     pitch_x = math.sin(frame * 0.02) * 5.0          
 
     glPushMatrix()
+    
+    # recuo da nave em z, dando a impressao de distancia
     glTranslatef(0.0 + ship_vibration, -0.3 + float_y + ship_vibration, nave_z)
     
     glRotatef(pitch_x + angulo_arrancada, 1, 0, 0) 
