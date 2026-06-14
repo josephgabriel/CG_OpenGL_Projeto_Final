@@ -22,7 +22,7 @@ fov_zoom = 45.0
 story_text = "---"
 enemy_z = -25
 
-#. Variáveis de estado físico dos modelos e câmera (Minha parte)
+# VARIAVEIS DE CONTROLE DAS NAVES
 policia_y = 6.0
 policia_z = -15.0
 angulo_arrancada = 0.0
@@ -46,7 +46,7 @@ def draw_text(x, y, text):
     glPopMatrix()
     glMatrixMode(GL_MODELVIEW)
 
-# função de update das fases (modificando velocidade das estrelas, texto, vibração ETC.)
+# função de update das fases
 def update_logic(value):
     global frame, star_speed, ship_vibration, story_text, fov_zoom
     global policia_y, policia_z, angulo_arrancada, nave_z
@@ -68,7 +68,7 @@ def update_logic(value):
 
     elif segundos < 65.0:
 
-        # policia se aproxima
+        # POLICIA SE APROXIMA
         if policia_y > 1.5:
             policia_y -= 0.2
         if policia_z < -8.0:
@@ -96,12 +96,12 @@ def update_logic(value):
         
         star_speed = 1.2
         
-        # distorção na camera para dar ideia de velocidade
+        # DISTORÇÃO NA CAMERA
         nave_z -= 0.6
         if fov_zoom < 110.0:
             fov_zoom += 1.5
         
-        # nave da policia é deixada pra trás
+        # NAVE DA POLICIA FICA PARA TRAS
         policia_z += 1.5
 
     for star in stars:
@@ -153,8 +153,6 @@ def display():
 
     if segundos >= 55.0:
         glPushMatrix()
-        
-        #. Posicionamento 3D da Viatura Policial
         glTranslatef(0.0, policia_y, policia_z)
         glScalef(3.0, 3.0, 3.0)
         draw_police()
@@ -168,7 +166,7 @@ def display():
 
     glPushMatrix()
     
-    # recuo da nave em z, dando a impressao de distancia
+    # RECUO DA NAVE EM Z, PARA DAR IMPRESSAO DE DISTANCIA
     glTranslatef(0.0 + ship_vibration, -0.3 + float_y + ship_vibration, nave_z)
     
     glRotatef(pitch_x + angulo_arrancada, 1, 0, 0) 
