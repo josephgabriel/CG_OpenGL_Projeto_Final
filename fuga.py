@@ -46,6 +46,47 @@ def draw_text(x, y, text):
     glPopMatrix()
     glMatrixMode(GL_MODELVIEW)
 
+roteiro = [
+    (3.0, "Episódio de hoje: Inimigos do DETRAN"),
+    (7.0, "Capitão Morgan: Bom, senhores... mais uma missão completa."),
+    (11.0, "Cabo Marston: Caraca... finalmente a gente vai para casa! Eu tô morrendo de fome."),
+    (15.0, "Recruta Lenny: Você vai me pagar um hambúrgão quando chegarmos, né, Marston?"),
+    (18.0, "Cabo Marston: Só quando chegarmos, aperriado."),
+    (20.0, "Recruta Lenny: Tá bom, tá bom..."),
+    (24.0, "Cabo Martson: Mas falando sério, essas missões estão ficando fáceis demais."),
+    (26.0, "Recruta Lenny: Definitivamente."),
+    (30.0, "Capitão Morgan: Só não fala isso pro imperador Néc-io, que ele dificulta."),
+    (32.0, ""),
+    (34.0, "Tenente Kowalski: Capitão..."),
+    (36.0, "Capitão Morgan: O que foi agora, Kowalski?"),
+    (40.0, "Tenente Kowalski: Mandaram mensagem no grupo do Zap dos Guardiões."),
+    (41.0, "Capitão Morgan: E?"),
+    (45.0, "Tenente Kowalski: Disseram que a Blitz Espacial tá por perto."),
+    (48.0, "Capitão Morgan: E o que eu tenho a ver com isso?"),
+    (52.0, "Tenente Kowalski: O senhor não tá com a licença da nave vencida?"),
+    (54.0, ""),
+    (58.0, "Capitão Morgan: Kowalski... Nós acabamos de salvar metade do universo..."),
+    (62.0, "E eu sou a DROGA do gatilho mais rápido desta região do espaço."),
+    (66.0, "Você acha mesmo que ALGUÉM VAI PARAR A GENTE POR TÃO POUCO?"),
+    (68.0, ""), #aqui nave deve começar a tremer
+    (70.0, "Computador de bordo: ALERTA ALERTA! NAVE SE APROXIMANDO..."),
+    (73.0, "Recruta Lenny: Capitão... o que o senhor disse sobre a Blitz não parar a gente?"), #aqui nave aparece
+    (75.0, "Cabo Marston: Capitão... e agora, o que a gente faz?"),
+    (77.0, "Capitão Morgan: ..."),
+    (79.0, "VAMOS DAR O FORA DAQUI!"),
+    (82.0, ""), #aqui ativa hipervelocidade
+    (84.0, "Capitão Morgan: Conseguimos..."),
+    (87.0, "Computador: ATENÇÃO! INFRAÇÃO ADICIONAL REGISTRADA: TENTATIVA DE FUGA."),
+    (89.0, "Capitão Morgan: Ah, qual é?"),
+    (91.0, "[FIM]")
+]
+
+def history(segundos):
+    for i, texto in roteiro:
+        if segundos <= i:
+            return texto
+    return ""
+
 # função de update das fases
 def update_logic(value):
     global frame, star_speed, ship_vibration, story_text, fov_zoom
@@ -53,7 +94,9 @@ def update_logic(value):
     
     frame += 1
     segundos = frame / 60.0
-    
+
+    story_text = history(segundos)
+
     if segundos < 48.0:
 
         star_speed = 0.05
@@ -61,12 +104,12 @@ def update_logic(value):
         angulo_arrancada = 0.0
         nave_z = -6.5
 
-    elif segundos < 55.0:
+    elif segundos < 70.0:
         
         star_speed = 0.05
         ship_vibration = random.uniform(-0.02, 0.02)
 
-    elif segundos < 65.0:
+    elif segundos < 72.0:
 
         # POLICIA SE APROXIMA
         if policia_y > 1.5:
@@ -76,14 +119,14 @@ def update_logic(value):
             
         ship_vibration = random.uniform(-0.03, 0.03)
 
-    elif segundos < 67.0:
+    elif segundos < 78.0:
 
         if angulo_arrancada < 35.0:
             angulo_arrancada += 1.5
             
         ship_vibration = random.uniform(-0.08, 0.08)
 
-    elif segundos < 70.0:
+    elif segundos < 81.0:
 
         star_speed = 0.8
         ship_vibration = random.uniform(-0.15, 0.15)
