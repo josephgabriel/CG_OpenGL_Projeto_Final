@@ -218,7 +218,7 @@ def display():
 
     segundos = frame / 60.0
 
-    if segundos >= 55.0:
+    if segundos >= 72.0:
         glPushMatrix()
         glTranslatef(0.0, policia_y, policia_z)
         glScalef(3.0, 3.0, 3.0)

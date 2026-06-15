@@ -5,35 +5,35 @@ def draw_ship(blink):
     glBegin(GL_QUADS)
     
     # Face Superior (Verde)
-    glColor3f(0, 0.8, 0)
+    glColor3f(0.75, 0.75, 0.78)
     glVertex3f(-0.5,  0.5, -1.0)
     glVertex3f( 0.5,  0.5, -1.0)
     glVertex3f( 0.5,  0.5,  0.5)
     glVertex3f(-0.5,  0.5,  0.5)
 
     # Face Inferior (Azul Escuro)
-    glColor3f(0, 0, 0.5)
+    glColor3f(0.55, 0.55, 0.58)
     glVertex3f(-0.5, -0.5, -1.0)
     glVertex3f( 0.5, -0.5, -1.0)
     glVertex3f( 0.5, -0.5,  0.5)
     glVertex3f(-0.5, -0.5,  0.5)
 
     # Face Lateral Direita (Verde Escuro)
-    glColor3f(0, 0.5, 0)
+    glColor3f(0.35, 0.35, 0.38)
     glVertex3f( 0.5, -0.5, -1.0)
     glVertex3f( 0.5,  0.5, -1.0)
     glVertex3f( 0.5,  0.5,  0.5)
     glVertex3f( 0.5, -0.5,  0.5)
 
     # Face Lateral Esquerda (Verde Escuro)
-    glColor3f(0, 0.5, 0)
+    glColor3f(0.35, 0.35, 0.38)
     glVertex3f(-0.5, -0.5, -1.0)
     glVertex3f(-0.5,  0.5, -1.0)
     glVertex3f(-0.5,  0.5,  0.5)
     glVertex3f(-0.5, -0.5,  0.5)
 
     # Face Traseira (Azul)
-    glColor3f(0, 0, 1)
+    glColor3f(0.25, 0.25, 0.28)
     glVertex3f(-0.5, -0.5, -1.0)
     glVertex3f( 0.5, -0.5, -1.0)
     glVertex3f( 0.5,  0.5, -1.0)
@@ -45,30 +45,30 @@ def draw_ship(blink):
     glBegin(GL_TRIANGLES)
     
     # Rampa Superior do Bico (Vermelho)
-    glColor3f(1, 0, 0)
+    glColor3f(0.85, 0.85, 0.90)
     glVertex3f( 0.0,  0.5,  1.5) # Ponta do bico (centralizada em X)
     glVertex3f(-0.5,  0.5,  0.5) # Canto superior esquerdo do cubo
     glVertex3f( 0.5,  0.5,  0.5) # Canto superior direito do cubo
 
     # Rampa Inferior do Bico (Vermelho Escuro)
-    glColor3f(0.7, 0, 0)
+    glColor3f(0.55, 0.55, 0.60)
     glVertex3f( 0.0,  0.5,  1.5)
     glVertex3f(-0.5, -0.5,  0.5) # Canto inferior esquerdo do cubo
     glVertex3f( 0.5, -0.5,  0.5) # Canto inferior direito do cubo
 
     # Lateral Esquerda do Bico
-    glColor3f(0.8, 0, 0)
+    glColor3f(0.45, 0.45, 0.50)
     glVertex3f( 0.0,  0.5,  1.5)
     glVertex3f(-0.5,  0.5,  0.5)
     glVertex3f(-0.5, -0.5,  0.5)
 
     # Lateral Direita do Bico
-    glColor3f(0.8, 0, 0)
+    glColor3f(0.45, 0.45, 0.50)
     glVertex3f( 0.0,  0.5,  1.5)
     glVertex3f( 0.5,  0.5,  0.5)
     glVertex3f( 0.5, -0.5,  0.5)
 
-    glColor3f(1, 1, 0)
+    glColor3f(0.40, 0.40, 0.45)
     # Face Superior da Asa
     glVertex3f(-0.5,  0.0,  0.0)  # Conectado na parede do cubo
     glVertex3f(-2.0, -0.2, -0.5)  # Ponta extrema da asa
@@ -89,7 +89,7 @@ def draw_ship(blink):
     glVertex3f(-0.5, -0.5,  0.0)
     glVertex3f(-0.5, -0.5, -1.0)
 
-    glColor3f(1, 0, 1)
+    glColor3f(0.40, 0.40, 0.45)
     # Face Superior da Asa
     glVertex3f(0.5,  0.0,  0.0)
     glVertex3f(2.0, -0.2, -0.5)
