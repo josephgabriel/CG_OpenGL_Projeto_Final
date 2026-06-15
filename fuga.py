@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+import pygame
 import random
 import math
 
@@ -27,6 +28,13 @@ policia_y = 6.0
 policia_z = -15.0
 angulo_arrancada = 0.0
 nave_z = -6.5
+
+pygame.mixer.init()
+pygame.init()
+alarme = pygame.mixer.Sound("audios/alarme.mp3")
+dialogo = pygame.mixer.Sound("audios/dialogo.wav")
+ultima_fala = ""
+tocou = False
 
 # texto
 def draw_text(x, y, text):
@@ -68,13 +76,13 @@ roteiro = [
     (58.0, "Capitão Morgan: Kowalski... Nós acabamos de salvar metade do universo..."),
     (62.0, "E eu sou a DROGA do gatilho mais rápido desta região do espaço."),
     (66.0, "Você acha mesmo que ALGUÉM VAI PARAR A GENTE POR TÃO POUCO?"),
-    (68.0, ""), #aqui nave deve começar a tremer
-    (70.0, "Computador de bordo: ALERTA ALERTA! NAVE SE APROXIMANDO..."),
-    (73.0, "Recruta Lenny: Capitão... o que o senhor disse sobre a Blitz não parar a gente?"), #aqui nave aparece
-    (75.0, "Cabo Marston: Capitão... e agora, o que a gente faz?"),
+    (68.0, ""),
+    (70.0, "Computador de bordo: ALERTA ALERTA! NAVE SE APROXIMANDO..."), #animação da nave tremendo
+    (73.0, "Recruta Lenny: Capitão... o que o senhor disse sobre a Blitz não parar a gente?"),
+    (75.0, "Cabo Marston: Capitão... e agora, o que a gente faz?"), #animação da nave se aproximando
     (77.0, "Capitão Morgan: ..."),
-    (79.0, "VAMOS DAR O FORA DAQUI!"),
-    (82.0, ""), #aqui ativa hipervelocidade
+    (79.0, "VAMOS DAR O FORA DAQUI!"), #hipervelocidade
+    (82.0, ""),
     (84.0, "Capitão Morgan: Conseguimos..."),
     (87.0, "Computador: ATENÇÃO! INFRAÇÃO ADICIONAL REGISTRADA: TENTATIVA DE FUGA."),
     (89.0, "Capitão Morgan: Ah, qual é?"),
@@ -89,13 +97,26 @@ def history(segundos):
 
 # função de update das fases
 def update_logic(value):
+    global ultima_fala, tocou
     global frame, star_speed, ship_vibration, story_text, fov_zoom
     global policia_y, policia_z, angulo_arrancada, nave_z
     
     frame += 1
     segundos = frame / 60.0
+ 
+    novo_texto = history(segundos)
 
-    story_text = history(segundos)
+    if novo_texto != ultima_fala:
+
+       ultima_fala = novo_texto
+       story_text = novo_texto
+
+       if (
+          story_text != ""
+          and not story_text.startswith("Episódio de hoje")
+          and story_text != "[FIM]"
+        ):
+          dialogo.play()
 
     if segundos < 48.0:
 
@@ -110,6 +131,9 @@ def update_logic(value):
         ship_vibration = random.uniform(-0.02, 0.02)
 
     elif segundos < 72.0:
+        if not tocou:
+          alarme.play() #tá levemente atrasado
+          tocou = True
 
         # POLICIA SE APROXIMA
         if policia_y > 1.5:
