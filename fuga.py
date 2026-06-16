@@ -34,7 +34,9 @@ pygame.init()
 alarme = pygame.mixer.Sound("audios/alarme.mp3")
 dialogo = pygame.mixer.Sound("audios/dialogo.wav")
 ultima_fala = ""
-tocou = False
+tocou = False #som
+alarme_ativo = False #efeito
+alarme_tempo = 0
 
 # texto
 def draw_text(x, y, text):
@@ -89,6 +91,35 @@ roteiro = [
     (91.0, "[FIM]")
 ]
 
+def alert_effect():
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+    glMatrixMode(GL_PROJECTION)
+    glPushMatrix()
+    glLoadIdentity()
+    gluOrtho2D(0, WIDTH, 0, HEIGHT)
+
+    glMatrixMode(GL_MODELVIEW)
+    glPushMatrix()
+    glLoadIdentity()
+
+    glColor4f(1.0, 0.0, 0.0, 0.25)  
+
+    glBegin(GL_QUADS)
+    glVertex2f(0, 0)
+    glVertex2f(WIDTH, 0)
+    glVertex2f(WIDTH, HEIGHT)
+    glVertex2f(0, HEIGHT)
+    glEnd()
+
+    glPopMatrix()
+    glMatrixMode(GL_PROJECTION)
+    glPopMatrix()
+    glMatrixMode(GL_MODELVIEW)
+
+    glDisable(GL_BLEND)
+
 def history(segundos):
     for i, texto in roteiro:
         if segundos <= i:
@@ -97,7 +128,7 @@ def history(segundos):
 
 # função de update das fases
 def update_logic(value):
-    global ultima_fala, tocou
+    global ultima_fala, tocou, alarme_tempo, alarme_ativo
     global frame, star_speed, ship_vibration, story_text, fov_zoom
     global policia_y, policia_z, angulo_arrancada, nave_z
     
@@ -132,8 +163,14 @@ def update_logic(value):
 
     elif segundos < 72.0:
         if not tocou:
-          alarme.play() #tá levemente atrasado
-          tocou = True
+            alarme.play()
+            tocou = True
+            alarme_tempo = frame  # marca início do alerta
+
+        alarme_ativo = True
+
+    elif segundos < 81.0:
+        alarme_ativo = False
 
         # POLICIA SE APROXIMA
         if policia_y > 1.5:
@@ -242,6 +279,11 @@ def display():
     
     draw_ship(blink_value)
     glPopMatrix()
+
+    #efeito de alarme
+    if alarme_ativo:
+       if (frame // 20) % 2 == 0:
+          alert_effect()
 
     # narrativa
     draw_text(30, 40, story_text)
