@@ -1,7 +1,7 @@
 # **Animações Criativas com Narrativa - Ordem dos Guardiões Espaciais**
 
 ## **📌 Sobre o projeto**
-Este repositório se refere à entrega do trabalho de síntese de imagem da disciplina de **Engenharia de Software**, do 5º semestre do curso de **Ciência da Computação** do Instituto Federal do Elsete Anguá, sob orientação do professor **Nécio de Lima Veras**.
+Este repositório se refere à entrega do trabalho de síntese de imagem da disciplina de **Engenharia de Software**, do 5º semestre do curso de **Ciência da Computação** do Instituto Federal de Educação, Ciência e Tecnologia do Ceará - campus Tianguá, sob orientação do professor **Nécio de Lima Veras**.
 O trabalho consiste na consolidação dos conceitos aprendidos na disciplina referentes à **manipulação gráfica com OpenGL**, onde cada equipe deveria escolher um tema e desenvolver uma animação interativa com narrativa.
 
 ## **🎯 Enunciado do trabalho**
